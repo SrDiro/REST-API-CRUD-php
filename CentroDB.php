@@ -4,8 +4,8 @@ class CentroDB {
     protected $mysqli;
     const LOCALHOST = '127.0.0.1';
     const USER = 'root';
-    const PASSWORD = 'root';
-    const DATABASE = 'fpmislata';
+    const PASSWORD = '';
+    const DATABASE = 'fpsvalencia';
 
     public function __construct() {
         try{
@@ -36,7 +36,7 @@ class CentroDB {
 
 
     public function insert($name='', $direction='', $telephone=0){
-        $stmt = $this->mysqli->prepare("INSERT INTO centros(name, direction, telephone) VALUES (?, ?, ?, ?); ");
+        $stmt = $this->mysqli->prepare("INSERT INTO centros(name, direction, telephone) VALUES (?, ?, ?); ");
         $stmt->bind_param('sss', $name, $direction, $telephone);
         $r = $stmt->execute();
         $stmt->close();

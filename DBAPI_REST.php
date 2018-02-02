@@ -37,23 +37,22 @@ class DBAPI_REST {
   }
 
   function insertCentro(){
-  	if($_GET['action']=='centros'){
-  		$obj = json_decode( file_get_contents('php://input') );
-  		$objArr = (array)$obj;
-  		if (empty($objArr)){
-  			$this->response(422,"error","Nothing to add. Check json");
-  		}else if(isset($obj->name)){
-  			$people = new CentroDB();
-  			$people->insert($obj->name, $obj->direction, $obj->telephone);
-  			$this->response(200,"success","new record added");
-  		}else{
-  			$this->response(422,"error","The property is not defined");
-  		}
-  	}
-	} else {
-		$this->response(400);
-	}
-
+    if($_GET['action']=='centros'){
+      $obj = json_decode( file_get_contents('php://input') );
+      $objArr = (array)$obj;
+      if (empty($objArr)){
+        $this->response(422,"error","Nothing to add. Check json");
+      } else if(isset($obj->name)) {
+        $people = new CentroDB();
+        $people->insert($obj->name, $obj->direction, $obj->telephone);
+        $this->response(200,"success","new record added");
+      }else{
+        $this->response(422,"error","The property is not defined");
+      }
+    } else {
+      $this->response(400);
+    }
+  }
 
 	function response($code=200, $status="", $message="") {
 		http_response_code($code);
@@ -64,26 +63,17 @@ class DBAPI_REST {
 	}
 
 	function getRows(){
-		if($_GET['action']=='peoples'){
-			$db = new PeopleDB();
+		if($_GET['action']=='centros'){
+			$db = new CentroDB();
 			if(isset($_GET['id'])){
-				$response = $db->getPeople($_GET['id']);
+				$response = $db->getCentro($_GET['id']);
 				echo json_encode($response,JSON_PRETTY_PRINT);
 			} else {
-				$response = $db->getPeoples();
-				echo json_encode($response,JSON_PRETTY_PRINT);
-			}
-		} else if($_GET['action']=='products'){
-			$db = new ProductDB();
-			if(isset($_GET['id'])){
-				$response = $db->getProduct($_GET['id']);
-				echo json_encode($response,JSON_PRETTY_PRINT);
-			} else {
-				$response = $db->getProducts();
+				$response = $db->getCentros();
 				echo json_encode($response,JSON_PRETTY_PRINT);
 			}
 		} else {
-        $this->response(400);
+      $this->response(400);
 		}
 	}
 
@@ -95,13 +85,13 @@ class DBAPI_REST {
             $this->getRows();
             break;
         case 'POST':
-            $this->saveRow();
+            $this->insertCentro();
             break;
         case 'PUT':
-            $this->updateRow();
+            $this->updateCentro();
             break;
         case 'DELETE':
-            $this->deleteRow();
+            $this->deleteCentro();
             break;
         default:
             $this->response(405);
