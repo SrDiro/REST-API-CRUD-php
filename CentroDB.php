@@ -55,8 +55,8 @@ class CentroDB {
 
 	public function update($id=0, $newName='', $newDirection='', $newTelephone=0) {
         if($this->checkID($id)){
-            $stmt = $this->mysqli->prepare("UPDATE people SET name=?, direction=?, telephone=? WHERE id = ? ; ");
-            $stmt->bind_param('ssss', $id, $newName, $newDirection, $newTelephone);
+            $stmt = $this->mysqli->prepare("UPDATE centros SET name=?, direction=?, telephone=? WHERE id = ? ; ");
+            $stmt->bind_param('ssss', $newName, $newDirection, $newTelephone, $id);
             $r = $stmt->execute();
             $stmt->close();
             return $r;
